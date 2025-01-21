@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dice Dominion</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    
+    <!-- Toggle Theme Button -->
+    <div
+      id="toggleTheme"
+      style="position: absolute; top: 10px; right: 10px; cursor: pointer">
+      <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+    </div>
+
+    <!-- Instructions Manual -->
+    <div id="instructions" class="instructions">
+      <h2>How to play:</h2>
+      <ul>
+        <li>Start from a corner.</li>
+        <li>Roll the dice to set your block size.</li>
+        <li>Press <strong>R</strong> to rotate blocks before placing.</li>
+        <li>Next block should be connected to the previous ones.</li>
+        <li>Skip your turn up to 3 times if stuck.</li>
+        <li>The game ends when no moves are left.</li>
+        <li>The player with the most blocks wins!</li>
+      </ul>
+      <p>Have fun and may the best strategist win!</p>
+    </div>
+
+    <!-- Player Selection Box -->
+    <div id="playerSelection" style="position: absolute; top: 10px; left: 10px">
+      <!-- Turn Status Display -->
+      <div
+        id="turnStatusDisplay"
+        style="margin-top: 10px; font-weight: bold; font-size: 16px"
+      >
+        Waiting for the game to start...
+      </div>
+    </div>
+
+    <!-- Menu Section -->
+    <div id="menu">
+      <h1>Welcome to Dice Dominion</h1>
+      <p>Select your preferences to start the game:</p>
+      <label for="boardSizeInput">Board Size:</label>
+      <input
+        type="number"
+        id="boardSizeInput"
+        min="5"
+        max="20"
+        value="10"
+      /><br /><br />
+      <label for="playerColor">Player 1 Color:</label>
+      <input type="color" id="playerColor" value="#0073e6" /><br /><br />
+      <!-- startGame(false) because the game shouldnt start when lobby is created (player 2 hasnt joined yet) -->
+      <button onclick="startGame(false)">Create Lobby</button>
+      <label for="isPublicLobby">Public Lobby:</label>
+      <input type="checkbox" id="isPublicLobby" checked /><br /><br />
+      <div id="publicLobbiesSection" style="margin-top: 20px">
+        <h3>Active Public Lobbies</h3>
+        <div id="publicLobbiesList"></div>
+      </div>
+      <div id="lobbySection" style="margin-top: 20px">
+        <label for="lobbyCodeInput">Enter Lobby Code:</label>
+        <input
+          type="text"
+          id="lobbyCodeInput"
+          placeholder="Lobby Code"
+          maxlength="10"
+        />
+         <!-- startGame(true) because the game should start when lobby is joined -->
+        <button onclick="startGame(true)">Join Lobby</button>
+      </div>
+    </div>
+
+    <!-- Game Section -->
+    <div id="container">
+      <button id="exitButton" class="exit-button">Exit Game</button>
+      <h1>Dice Dominion</h1>
+      <div id="board"></div>
+      <button id="rollDiceButton" onclick="rollDice()">Roll Dice</button>
+      <p id="status"></p>
+      <div id="controls" style="display: none">
+        <p>
+          Player <span id="currentPlayerDisplay"></span>, rolled
+          <span id="diceResult"></span>. Choose where to place your block:
+        </p>
+      </div>
+      <button id="skipTurnButton" style="display: none" onclick="skipTurn()">
+        Skip Turn
+      </button>
+      <button
+        id="declareWinnerButton"
+        style="display: none"
+        onclick="declareOtherPlayerWinner()"
+      >
+        Declare Player <span id="winnerPlayerDisplay"></span> as Winner
+      </button>
+    </div>
+
+    <!-- Chat Section -->
+    <div id="chatContainer" style="display: none">
+      <div id="chatBox">
+        <div id="chatMessages"></div>
+        <div id="chatInput">
+          <input type="text" id="messageInput" placeholder="Type your message...">
+          <button onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase Integration Section -->
+    <div id="firebaseSection">
+     <!--  <h2>Firebase Realtime Database</h2> -->
+      <div id="data"></div>
+      <div
+        id="lobbyCodeDisplay"
+        style="margin-top: 20px; font-size: 18px; font-weight: bold"
+      ></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBHkhQBT_KMmv1equseC4qTsFIdInHB1qM",
+        authDomain: "dice-dominion-53d6b.firebaseapp.com",
+        databaseURL:
+          "https://dice-dominion-53d6b-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "dice-dominion-53d6b",
+        storageBucket: "dice-dominion-53d6b.firebasestorage.app",
+        messagingSenderId: "1030848464521",
+        appId: "1:1030848464521:web:c7100b35c65257cc832858",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Application and Game Logic Scripts -->
+    <script type="module" src="script.js"></script>
+    <script type="module" src="networking.js"></script>
+    <script type="module" src="lobbyManager.js"></script>
+  </body>
+</html>
