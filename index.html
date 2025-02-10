@@ -4,19 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dice Dominion</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    
     <!-- Toggle Theme Button -->
-    <div
-      id="toggleTheme"
-      style="position: absolute; top: 10px; right: 10px; cursor: pointer">
-      <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+    <div id="toggleTheme" style="position: absolute; top: 10px; right: 10px; cursor: pointer">
+      <button id="toggleTheme">Dark/Light Mode</button>
     </div>
 
     <!-- Instructions Manual -->
@@ -34,12 +27,24 @@
       <p>Have fun and may the best strategist win!</p>
     </div>
 
+    <!-- Stabilo point 88 -->
+    <div class="ballpoint pen1">
+      <div class="line line1"></div>
+      <div class="line line2"></div>
+      <div class="tail tail1"></div>
+    </div>
+    <div class="ballpoint pen2">
+      <div class="line line1"></div>
+      <div class="line line2"></div>
+      <div class="tail tail2"></div>
+    </div>
+
     <!-- Player Selection Box -->
     <div id="playerSelection" style="position: absolute; top: 10px; left: 10px">
       <!-- Turn Status Display -->
       <div
         id="turnStatusDisplay"
-        style="margin-top: 10px; font-weight: bold; font-size: 16px"
+        style="margin-top: 10px; font-weight: bold; font-size: 16px; color: #fffaea"
       >
         Waiting for the game to start...
       </div>
@@ -49,17 +54,20 @@
     <div id="menu">
       <h1>Welcome to Dice Dominion</h1>
       <p>Select your preferences to start the game:</p>
+      <label for="playerName">Player Name:</label>
+      <input style="font-family: Gochi Hand, serif; font-weight: 400; font-style: normal" type="text" id="playerName" placeholder="Enter your name" required /><br /><br />
       <label for="boardSizeInput">Board Size:</label>
-      <input
+      <input 
+        style="font-family: Gochi Hand, serif; font-weight: 400; font-style: normal"
         type="number"
         id="boardSizeInput"
         min="5"
-        max="20"
+        max="25"
         value="10"
       /><br /><br />
       <label for="playerColor">Player 1 Color:</label>
       <input type="color" id="playerColor" value="#0073e6" /><br /><br />
-      <!-- startGame(false) because the game shouldnt start when lobby is created (player 2 hasnt joined yet) -->
+      <!-- startGame(false) because the game should not start until player 2 joins -->
       <button onclick="startGame(false)">Create Lobby</button>
       <label for="isPublicLobby">Public Lobby:</label>
       <input type="checkbox" id="isPublicLobby" checked /><br /><br />
@@ -69,13 +77,14 @@
       </div>
       <div id="lobbySection" style="margin-top: 20px">
         <label for="lobbyCodeInput">Enter Lobby Code:</label>
-        <input
+        <input 
+          style="font-family: Gochi Hand, serif; font-weight: 400; font-style: normal"
           type="text"
           id="lobbyCodeInput"
           placeholder="Lobby Code"
           maxlength="10"
         />
-         <!-- startGame(true) because the game should start when lobby is joined -->
+        <!-- startGame(true) because the game should start when joining an existing lobby -->
         <button onclick="startGame(true)">Join Lobby</button>
       </div>
     </div>
@@ -89,7 +98,7 @@
       <p id="status"></p>
       <div id="controls" style="display: none">
         <p>
-          Player <span id="currentPlayerDisplay"></span>, rolled
+          <span id="currentPlayerDisplay"></span> rolled
           <span id="diceResult"></span>. Choose where to place your block:
         </p>
       </div>
@@ -101,7 +110,10 @@
         style="display: none"
         onclick="declareOtherPlayerWinner()"
       >
-        Declare Player <span id="winnerPlayerDisplay"></span> as Winner
+        Declare <span id="winnerPlayerDisplay"></span> as Winner
+      </button>
+      <button id="rerollButton" style="display: none" onclick="handleReroll()">
+        Re-roll
       </button>
     </div>
 
@@ -110,7 +122,7 @@
       <div id="chatBox">
         <div id="chatMessages"></div>
         <div id="chatInput">
-          <input type="text" id="messageInput" placeholder="Type your message...">
+          <input type="text" id="messageInput" placeholder="Type your message..." />
           <button onclick="sendMessage()">Send</button>
         </div>
       </div>
@@ -118,7 +130,6 @@
 
     <!-- Firebase Integration Section -->
     <div id="firebaseSection">
-     <!--  <h2>Firebase Realtime Database</h2> -->
       <div id="data"></div>
       <div
         id="lobbyCodeDisplay"
@@ -134,19 +145,17 @@
       const firebaseConfig = {
         apiKey: "AIzaSyBHkhQBT_KMmv1equseC4qTsFIdInHB1qM",
         authDomain: "dice-dominion-53d6b.firebaseapp.com",
-        databaseURL:
-          "https://dice-dominion-53d6b-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL: "https://dice-dominion-53d6b-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "dice-dominion-53d6b",
         storageBucket: "dice-dominion-53d6b.firebasestorage.app",
         messagingSenderId: "1030848464521",
-        appId: "1:1030848464521:web:c7100b35c65257cc832858",
+        appId: "1:1030848464521:web:c7100b35c65257cc832858"
       };
       firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- Application and Game Logic Scripts -->
-    <script type="module" src="script.js"></script>
-    <script type="module" src="networking.js"></script>
-    <script type="module" src="lobbyManager.js"></script>
+    <!-- Application Entry Point -->
+    <script type="module" src="main.js"></script>
+    <script type="module" src="defaults.js"></script>
   </body>
 </html>
